@@ -42,5 +42,14 @@ void AsteroidsObserver::onAsteroidOutOfRange(Asteroid asteroid) {
 
 // Called when an asteroid is destroyed by a phaser shot
 void AsteroidsObserver::onAsteroidDestroy(Asteroid asteroid) {
-    this->onAsteroidOutOfRange(asteroid); // erase the destroyed asteroid
+    AsteroidListItem *tptr = asteroid_list.beforeBegin();
+    
+    while (tptr->hasNext()) { // traverse the list until the ID is found
+        if (tptr->getNext()->getData().getID() == asteroid.getID()) {
+            asteroid_list.eraseAfter(tptr); // erase the destroyed asteroid from the list
+            break;
+        }
+        else
+            tptr = tptr->getNext();
+    }
 }
